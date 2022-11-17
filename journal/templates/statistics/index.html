@@ -1,0 +1,372 @@
+{% extends "layouts/base.html" %}
+{% block title %} Statistics {% endblock %}
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<div class="main-content-container container-fluid px-4 overflow-auto">
+    
+    <!-- Page Header -->
+    <div class="page-header row no-gutters py-4">
+        <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+            <span class="text-uppercase page-subtitle">{% if origin_date %}From {{ origin_date|date:"d/m/Y" }}{% endif %} Until {{ actual_date|date:"d/m/Y" }}</span>
+        </div>
+    </div>
+    <!-- End Page Header -->
+
+    <form action="" method="get">
+        <div class="row">
+            <div class="col-md-auto">
+                <div id="date" class="form-group">
+                    <label for="date" class="">
+                        Filter by Period of Time
+                    </label>
+                    <div>
+                        <select name="date" class="form-control" id="date">
+                            <option value="all">All</option>
+                            <option value="week" selected="">One Week</option>
+                            <option value="midmonth">Two Weeks</option>
+                            <option value="month">One Month</option>
+                            <option value="year">One Year</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-auto">
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <div>
+                        <button type="submit" class="btn btn-accent">Apply Filter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    {% if records_per_day or records_per_hour or journal_dates or summary %}
+        {% if summary %}
+        <!-- Day Summary -->
+        <h4 class="text-left">Day Summary - Mode</h4>
+        <div class="row">
+            {% load tags %}
+            {% if summary.journal %}
+            <div class="col mb-3">
+                <div class="card card-small">
+                    <div class="card-body pt-0">
+                        <div class="stats-small stats-small--1 mt-3">
+                            <div class="p-3 d-flex">
+                                <div class="d-flex flex-column m-auto">
+                                    <div class="stats-small__data text-center">
+                                        <span class="text-muted text-uppercase">
+                                            <i class="material-icons">edit_note</i> Journal
+                                        </span>
+                                        <h4 class="count my-3">{{ summary.journal.weekday_mode.weekday|weekday }} with {{ summary.journal.weekday_mode.count }} times</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% if summary.thought %}
+            <div class="col mb-3">
+                <div class="card card-small">
+                    <div class="card-body pt-0">
+                        <div class="stats-small stats-small--1 mt-3">
+                            <div class="p-3 d-flex">
+                                <div class="d-flex flex-column m-auto">
+                                    <div class="stats-small__data text-center">
+                                        <span class="text-muted text-uppercase">
+                                            <i class="material-icons">question_mark</i> Thought
+                                        </span>
+                                        <h4 class="count my-3">{{ summary.thought.weekday_mode.weekday|weekday }} with {{ summary.thought.weekday_mode.count }} times</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        <!-- End Day Summary -->
+        
+        <!-- Hour Summary -->
+        <h4 class="text-left">Hour Summary - Mode</h4>
+        <div class="row">
+            {% load tags %}
+            {% if summary.journal %}
+            <div class="col mb-3">
+                <div class="card card-small">
+                    <div class="card-body pt-0">
+                        <div class="stats-small stats-small--1 mt-3">
+                            <div class="p-3 d-flex">
+                                <div class="d-flex flex-column m-auto">
+                                    <div class="stats-small__data text-center">
+                                        <span class="text-muted text-uppercase">
+                                            <i class="material-icons">edit_note</i> Journal
+                                        </span>
+                                        <h4 class="count my-3">At {{ summary.journal.hour_mode.hour }}h with {{ summary.journal.hour_mode.count }} times</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% if summary.thought %}
+            <div class="col mb-3">
+                <div class="card card-small">
+                    <div class="card-body pt-0">
+                        <div class="stats-small stats-small--1 mt-3">
+                            <div class="p-3 d-flex">
+                                <div class="d-flex flex-column m-auto">
+                                    <div class="stats-small__data text-center">
+                                        <span class="text-muted text-uppercase">
+                                            <i class="material-icons">question_mark</i> Thought
+                                        </span>
+                                        <h4 class="count my-3">At {{ summary.thought.hour_mode.hour }}h with {{ summary.thought.hour_mode.count }} times</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        <!-- End Hour Summary -->
+        {% endif %}
+
+        {% if records_per_day or records_per_hour or journal_dates %}
+        <div class="row">
+            <div class="col mb-4">
+                <div class="card card-small">
+                    <div class="card-header border-bottom">
+                        <h6 class="m-0">Charts</h6>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="container">
+                            {% if journal_dates %}
+                            <div class="row py-3">
+                                <div class="col">
+                                    <canvas style="max-width: 100% !important;" id="journal_entries"></canvas>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if records_per_day or records_per_hour %}
+                            <div class="row py-3">
+                                {% if records_per_day %}
+                                <div class="col-sm">
+                                    <canvas style="max-width: 100% !important;" id="records_per_day"></canvas>
+                                </div>
+                                {% endif %}
+                                {% if records_per_hour %}
+                                <div class="col-sm">
+                                    <canvas style="max-width: 100% !important;" id="records_per_hour"></canvas>
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Users Stats -->
+        </div>
+        {% endif %}
+    {% else %}
+        <div class="jumbotron jumbotron-fluid mt-3 p-4">
+            <h1 class="display-4">Hello {{ request.user.first_name }}!</h1>
+            <p class="lead">There isn't enought journal entries in this period to make statistics!</p>
+            <hr class="my-4">
+            <p>You can start by adding some entries</p>
+            <div class="lead">
+                <a class="btn btn-primary btn-lg mb-2" href="{% url 'journal_create' %}" role="button">Journal</a>
+                <a class="btn btn-primary btn-lg mb-2" href="{% url 'thought_create' %}" role="button">Thought</a>
+                <a class="btn btn-primary btn-lg mb-2" href="{% url 'sport_create' %}" role="button">Sport</a>
+                <a class="btn btn-primary btn-lg mb-2" href="{% url 'measurements_create' %}" role="button">Measurements</a>
+                <a class="btn btn-primary btn-lg mb-2" href="{% url 'food_create' %}" role="button">Food</a>
+                <a class="btn btn-primary btn-lg mb-2" href="{% url 'healreasons_create' %}" role="button">Heal Reasons</a>
+                <a class="btn btn-primary btn-lg mb-2" href="{% url 'proscons_create' %}" role="button">Pros-Cons of my ED</a>
+                <a class="btn btn-primary btn-lg mb-2" href="{% url 'forthebetterlife_create' %}" role="button">For The Better Life</a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+{% if records_per_day or records_per_hour or journal_dates %}
+<script>
+    {% if journal_dates %}
+    // Plot_Options
+    const Options = {
+        responsive: true,
+        legend: {
+            position: 'top'
+        },
+        scales: {
+            x: {
+                type: 'time',
+                time: {
+                    unit: 'day',
+                },
+            },
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    beginAtZero: true,
+                    callback: function(value) {if (value % 1 === 0) {return value;} }
+                },
+            //    min: 0,
+            //    max: 100,
+            },
+        },
+        plugins: {
+            decimation: {
+                enabled: true,
+                algorithm: 'lttb',
+            }
+        },
+    };
+    const journal_dates_untreated = {{ journal_dates | safe }};
+    var journal_dates = [];
+    journal_dates_untreated.forEach((d) => {
+        journal_dates.push(new Date(d));
+    });
+    const journal_values = {{ journal_values | safe }};
+
+    const no_of_times_dataset = {
+        label: 'Number of Times',
+        fill: 'start',
+        data: journal_values,
+        borderColor: 'rgba(0, 123, 255, 1)',
+        tension: 0.1
+    };
+
+    const JournalEntries_Dataset = [no_of_times_dataset, ];
+    const JournalEntries_Data = {
+        labels: journal_dates,
+        datasets: JournalEntries_Dataset
+    };
+
+    const JournalEntries_Config = {
+        type: 'line',
+        data: JournalEntries_Data,
+        options: Options
+    };
+
+    const JournalEntries_Chart = new Chart(
+        document.getElementById('journal_entries').getContext('2d'),
+        JournalEntries_Config
+    );
+    {% endif %}
+
+    {% if records_per_day or records_per_hour %}
+    // Bar_Options
+    const Bar_Options = {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+    {% endif %}
+
+    {% if records_per_day %}
+    const records_day = {{ records_per_day | safe }};
+    var records_day_x = [];
+    var records_day_y = [];
+    records_day.forEach((d) => {
+        records_day_x.push(d.weekday);
+        records_day_y.push(d.count);
+    });
+
+    const day_options = {
+        scales: {
+            x: {
+                type: 'category',
+                labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            },
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    beginAtZero: true,
+                    callback: function(value) {if (value % 1 === 0) {return value;} }
+                }
+            },
+        },
+    }
+    
+    const records_day_data = {
+        labels: records_day_x,
+        datasets: [{
+            label: 'Records per Day',
+            data: records_day_y,
+            fill: 'start',
+            borderColor: 'rgb(0, 123, 255)',
+            tension: 0.1
+        }]
+    };
+    const records_day_config = {
+        type: 'line',
+        data: records_day_data,
+        options: day_options
+      };
+    const RecordsDay_Chart = new Chart(
+        document.getElementById('records_per_day').getContext('2d'),
+        records_day_config
+    );
+    {% endif %}
+
+    {% if records_per_hour %}
+    const records_hour = {{ records_per_hour | safe }};
+    var records_hour_x = [];
+    var records_hour_y = [];
+    records_hour.forEach((d) => {
+        records_hour_x.push(d.hour);
+        records_hour_y.push(d.count);
+    });
+
+    const hour_options = {
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    beginAtZero: true,
+                    callback: function(value) {if (value % 1 === 0) {return value;} }
+                }
+            },
+        },
+    }
+
+    const records_hour_data = {
+        labels: records_hour_x,
+        datasets: [{
+            label: 'Records per Hour',
+            data: records_hour_y,
+            fill: 'start',
+            borderColor: 'rgb(0, 123, 255)',
+            tension: 0.1
+        }]
+    };
+
+    const records_hour_config = {
+        type: 'line',
+        data: records_hour_data,
+        options: hour_options
+    };
+
+    const RecordsHour_Chart = new Chart(
+        document.getElementById('records_per_hour').getContext('2d'),
+        records_hour_config
+    );
+      
+    {% endif %}
+</script>
+{% endif %}
+{% endblock javascripts %}

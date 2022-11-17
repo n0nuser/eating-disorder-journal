@@ -1,0 +1,39 @@
+{% if model %}
+    <div class="card mt-3">
+        <a class="btn btn-primary" data-toggle="collapse" href="#{{ id }}Collapse" role="button" aria-expanded="false" aria-controls="{{ id }}Collapse">
+            <h4 class="p-2 text-white">{{ Model }}</h4>
+        </a>
+        <div class="collapse" id="{{ id }}Collapse">
+            <div class="card card-body p-3">
+                <div class="row mx-1">
+                    <div class="col-lg col-md-6 col-sm-6">
+                        <a href="{% url url_csv %}" target="_blank" role="button">
+                            <div class="stats-small--1 mb-3">
+                                <div class="p-3 m-2 d-flex btn btn-primary">
+                                    <div class="d-flex flex-column m-auto">
+                                        <div class="stats-small__data text-center">
+                                            <h4 class="count text-white">CSV</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg col-md-6 col-sm-6">
+                        <a href="{% url url_pdf %}" target="_blank" role="button">
+                            <div class="stats-small--1 mb-3">
+                                <div class="p-3 m-2 d-flex btn btn-primary">
+                                    <div class="d-flex flex-column m-auto">
+                                        <div class="stats-small__data text-center">
+                                            <h4 class="count text-white">PDF</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

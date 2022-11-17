@@ -1,0 +1,52 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Save Entries{% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="main-content-container container-fluid px-4 overflow-auto">
+    {% if journal or thought %}
+        <!-- Page Header -->
+        <div class="page-header row no-gutters py-4">
+            <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+                <h3 class="page-title">Save</h3>
+            </div>
+        </div>
+        <!-- End Page Header -->
+
+        {% include "save/savebutton.html" with model=journal id="journal" Model="Journal" url_csv="journal_csv" url_pdf="journal_pdf" %}
+        {% include "save/savebutton.html" with model=thought id="thought" Model="Thought" url_csv="thought_csv" url_pdf="thought_pdf" %}
+        {% include "save/savebutton.html" with model=sport id="sport" Model="Sport" url_csv="sport_csv" url_pdf="sport_pdf" %}
+        {% include "save/savebutton.html" with model=measurements id="measurements" Model="Measurements" url_csv="measurements_csv" url_pdf="measurements_pdf" %}
+        {% include "save/savebutton.html" with model=food id="food" Model="Food" url_csv="food_csv" url_pdf="food_pdf" %}
+        {% include "save/savebutton.html" with model=healreasons id="healreasons" Model="Heal Reasons" url_csv="healreasons_csv" url_pdf="healreasons_pdf" %}
+        {% include "save/savebutton.html" with model=proscons id="proscons" Model="Pros - Cons" url_csv="proscons_csv" url_pdf="proscons_pdf" %}
+        {% include "save/savebutton.html" with model=forthebetterlife id="forthebetterlife" Model="For The Better Life" url_csv="forthebetterlife_csv" url_pdf="forthebetterlife_pdf" %}
+
+    {% else %}
+        <div class="jumbotron jumbotron-fluid mt-3 p-4">
+            <h1 class="display-4">Hello {{ request.user.first_name }}!</h1>
+            <p class="lead">There isn't enought journal entries to save them!</p>
+            <hr class="my-4">
+            <p>You can start by adding an entry</p>
+            <div class="lead">
+                <a class="btn btn-primary btn-lg mb-2" href="{% url 'journal_create' %}" role="button">Journal</a>
+                <a class="btn btn-primary btn-lg mb-2" href="{% url 'thought_create' %}" role="button">Thought</a>
+                <a class="btn btn-primary btn-lg mb-2" href="{% url 'sport_create' %}" role="button">Sport</a>
+                <a class="btn btn-primary btn-lg mb-2" href="{% url 'measurements_create' %}" role="button">Measurements</a>
+                <a class="btn btn-primary btn-lg mb-2" href="{% url 'food_create' %}" role="button">Food</a>
+                <a class="btn btn-primary btn-lg mb-2" href="{% url 'healreasons_create' %}" role="button">Heal Reasons</a>
+                <a class="btn btn-primary btn-lg mb-2" href="{% url 'proscons_create' %}" role="button">Pros-Cons of my ED</a>
+                <a class="btn btn-primary btn-lg mb-2" href="{% url 'forthebetterlife_create' %}" role="button">For The Better Life</a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

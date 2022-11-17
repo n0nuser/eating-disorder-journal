@@ -1,0 +1,131 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Welcome! {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="main-content-container container-fluid px-4 overflow-auto">
+    <div class="jumbotron jumbotron-fluid mt-3 p-4">
+        <h1 class="display-4">Hello {{ request.user.first_name }}!</h1>
+        <p class="lead">This is a journal where you can write how you feel and keep track of your feelings and your habits.</p>
+        <hr class="my-4">
+        <p>You can start by adding a some entries.</p>
+        <div class="lead">
+            <a class="btn btn-primary btn-lg mb-2" href="{% url 'journal_create' %}" role="button">Journal</a>
+            <a class="btn btn-primary btn-lg mb-2" href="{% url 'thought_create' %}" role="button">Thought</a>
+            <a class="btn btn-primary btn-lg mb-2" href="{% url 'sport_create' %}" role="button">Sport</a>
+            <a class="btn btn-primary btn-lg mb-2" href="{% url 'measurements_create' %}" role="button">Measurements</a>
+            <a class="btn btn-primary btn-lg mb-2" href="{% url 'food_create' %}" role="button">Food</a>
+            <a class="btn btn-primary btn-lg mb-2" href="{% url 'healreasons_create' %}" role="button">Heal Reasons</a>
+            <a class="btn btn-primary btn-lg mb-2" href="{% url 'proscons_create' %}" role="button">Pros-Cons of my ED</a>
+            <a class="btn btn-primary btn-lg mb-2" href="{% url 'forthebetterlife_create' %}" role="button">For The Better Life</a>
+        </div>
+    </div>
+
+    {% if dates.journal or dates.thought or dates.habit %}
+    <div class="row>
+        <!-- Users Stats -->
+        <div class="col mb-3">
+            <div class="card card-small">
+                <div class="card-header border-bottom">
+                    <h4 class="m-0">How many days since last entry</h4>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="row mt-3">
+                        {% if dates.journal %}
+                        <div class="col-lg col-md-6 col-sm-6 mb-2">
+                            <div class="stats-small stats-small--1">
+                                <div class="p-3 d-flex">
+                                    <div class="d-flex flex-column m-auto">
+                                        <div class="stats-small__data text-center">
+                                            <span class="text-muted text-uppercase">
+                                                <i class="material-icons">edit_note</i> Journal
+                                            </span>
+                                            <h4 class="count my-3">{{ dates.journal|timesince }}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if dates.thought %}
+                        <div class="col-lg col-md-6 col-sm-6 mb-2">
+                            <div class="stats-small stats-small--1">
+                                <div class="p-3 d-flex">
+                                    <div class="d-flex flex-column m-auto">
+                                        <div class="stats-small__data text-center">
+                                            <span class="text-muted text-uppercase">
+                                                <i class="material-icons">question_mark</i> Thought
+                                            </span>
+                                            <h4 class="count my-3">{{ dates.thought|timesince }}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if dates.sport %}
+                        <div class="col-lg col-md-6 col-sm-6 mb-2">
+                            <div class="stats-small stats-small--1">
+                                <div class="p-3 d-flex">
+                                    <div class="d-flex flex-column m-auto">
+                                        <div class="stats-small__data text-center">
+                                            <span class="text-muted text-uppercase">
+                                                <i class="material-icons">directions_run</i> Sport
+                                            </span>
+                                            <h4 class="count my-3">{{ dates.sport|timesince }}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if dates.food %}
+                        <div class="col-lg col-md-6 col-sm-6 mb-2">
+                            <div class="stats-small stats-small--1">
+                                <div class="p-3 d-flex">
+                                    <div class="d-flex flex-column m-auto">
+                                        <div class="stats-small__data text-center">
+                                            <span class="text-muted text-uppercase">
+                                                <i class="material-icons">restaurant</i> Food
+                                            </span>
+                                            <h4 class="count my-3">{{ dates.food|timesince }}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if dates.measurements %}
+                        <div class="col-lg col-md-6 col-sm-6 mb-2">
+                            <div class="stats-small stats-small--1">
+                                <div class="p-3 d-flex">
+                                    <div class="d-flex flex-column m-auto">
+                                        <div class="stats-small__data text-center">
+                                            <span class="text-muted text-uppercase">
+                                                <i class="material-icons">monitor_weight</i> Measurements
+                                            </span>
+                                            <h4 class="count my-3">{{ dates.measurements|timesince }}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Users Stats -->
+    </div>
+    {% endif %}
+</div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
