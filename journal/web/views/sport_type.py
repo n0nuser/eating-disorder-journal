@@ -16,32 +16,25 @@ class SportTypeListView(ListView):
     template_name: str = "common/list.html"
 
     def get_queryset(self):
-        q = super().get_queryset().filter(user=self.request.user).order_by("-ocurred_at")
+        q = super().get_queryset().filter(user=self.request.user).order_by("name")
         if not q:
             return SportType.objects.none()
         if search_value := self.request.GET.get("q"):
             q = q.filter(name__icontains=search_value)
-        if not q:
-            return SportType.objects.none()
-        date_to, date_from = filter_date_by(self.request)
-        if date_to and date_from:
-            q = q.filter(ocurred_at__range=(date_to, date_from))
-        return q or None
+        return q or SportType.objects.none()
 
     def get_paginate_by(self, queryset):
         return self.request.GET.get("show") or self.paginate_by
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["allow_date_filter"] = True
+        context["allow_date_filter"] = False
         context["page_title"] = "SportType"
         context["create_url"] = "sporttype_create"
         context["update_url"] = "sporttype_update"
         context["delete_url"] = "sporttype_delete"
         context["columns"] = ["Name"]
-        context["object_fields"] = [
-            "name",
-        ]
+        context["object_fields"] = ["name"]
         return context
 
 

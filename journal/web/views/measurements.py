@@ -41,6 +41,8 @@ class MeasurementsListView(ListView):
             "bmi",
             "bmi_evaluation",
         ]
+        context["message"] = "Adults who are underweight, with a <b>BMI under 18.5, have a 1.8 times greater risk of dying</b> than those with a BMI of 18.5 to 24.9, according to the researchers. BMI is a rough estimate of the amount of body fat a person carries.<br>What’s more, the risk of dying is 1.2 times higher for people who are obese (BMI of 30-34.9) and 1.3 times higher for those who are severely obese (a BMI of 35 or higher)."
+        context["message_source"] = "<a href='https://www.healthline.com/health-news/underweight-people-at-greater-risk-of-death-than-obese-040314#BMI-Under-18.5-Is-Risky' style='color: #fff !important'>Healthline - BMI Under 18.5 Is Risky</a>"
         return context
 
 

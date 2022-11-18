@@ -17,17 +17,28 @@
     </div>
     <!-- End Page Header -->
 
-    {% if message %}
-    <blockquote class="blockquote text-white rounded bg-primary p-3" style="font-size: 1rem !important;">
-        <p class="mb-0">{{ message|safe }}</p>
-        {% if message_source %}
-        <footer class="blockquote-footer text-white" style="font-size: 0.9rem !important;">{{ message_source|safe }}</footer>
-        {% endif %}
-      </blockquote>
-    {% endif %}
-
     {% if allow_date_filter %}
-    {% include 'includes/date_filter.html' %}
+    <form action="" method="get">
+        <div class="row mb-2">
+            <div class="col-4 col-md-auto">
+                <select name="date" class="form-control" id="date">
+                    <option value="all" selected="">All</option>
+                    <option value="week">One Week</option>
+                    <option value="midmonth">Two Weeks</option>
+                    <option value="month">One Month</option>
+                    <option value="year">One Year</option>
+                </select>
+            </div>
+    
+            <div class="col-4 col-md-auto">
+                <button type="submit" class="btn btn-accent">Apply Time Filter</button>
+            </div>
+
+            <div class="col-1 col-md-auto">
+                <a href="{% url "sporttype_list" %}"><button type="button" class="btn btn-primary">Sports</button></a>
+            </div>
+        </div>
+    </form>
     {% endif %}
 
     <!-- Default Light Table -->

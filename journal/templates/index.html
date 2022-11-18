@@ -10,9 +10,9 @@
 <div class="main-content-container container-fluid px-4 overflow-auto">
     <div class="jumbotron jumbotron-fluid mt-3 p-4">
         <h1 class="display-4">Hello {{ request.user.first_name }}!</h1>
-        <p class="lead">This is a journal where you can write how you feel and keep track of your feelings and your habits.</p>
+        <p class="lead">This is a journal where you can write how you feel and keep track of everything related to your ED.</p>
         <hr class="my-4">
-        <p>You can start by adding a some entries.</p>
+        <p>You can start by adding some entries.</p>
         <div class="lead">
             <a class="btn btn-primary btn-lg mb-2" href="{% url 'journal_create' %}" role="button">Journal</a>
             <a class="btn btn-primary btn-lg mb-2" href="{% url 'thought_create' %}" role="button">Thought</a>

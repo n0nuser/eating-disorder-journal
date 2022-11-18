@@ -13,7 +13,7 @@ from web.views.utils import filter_date_by
 class SportListView(ListView):
     model = Sport
     paginate_by: int = 10
-    template_name: str = "common/list.html"
+    template_name: str = "sport/list.html"
 
     def get_queryset(self):
         q = super().get_queryset().select_related("sport").filter(user=self.request.user).order_by("-ocurred_at")
@@ -38,7 +38,7 @@ class SportListView(ListView):
         context["create_url"] = "sport_create"
         context["update_url"] = "sport_update"
         context["delete_url"] = "sport_delete"
-        context["columns"] = ["Ocurred at", "Sport", "Duration"]
+        context["columns"] = ["Ocurred at", "Sport", "Duration (min)"]
         context["object_fields"] = [
             "ocurred_at",
             "sport__name",

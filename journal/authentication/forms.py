@@ -4,18 +4,14 @@ from django import forms
 
 from authentication.models import CustomUser
 
+
 class SignUpForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ("username",
-                  "email",
-                  "first_name",
-                  "last_name",
-                  "password1",
-                  "password2")
+        fields = ("username", "email", "first_name", "last_name", "gender", "birth_date", "password1", "password2")
 
 
 class CustomUserForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = ("username", "email")
+        fields = ("username", "email", "gender", "birth_date")

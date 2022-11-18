@@ -15,6 +15,8 @@ class CustomUserFactory(factory.django.DjangoModelFactory):
     first_name = factory.Faker("first_name")
     last_name = factory.Faker("last_name")
     username = factory.Faker("user_name")
+    gender = factory.Faker("random_element", elements=("m", "f", "o"))
+    birth_date = factory.Faker("date_of_birth", minimum_age=18, maximum_age=100)
     is_active = True
     is_staff = False
     is_superuser = False

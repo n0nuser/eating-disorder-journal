@@ -22,15 +22,15 @@ class StatisticsView(TemplateView):
         date_to, date_from = filter_date_by(self.request)
 
         if date_to and date_from:
-                journal = Journal.objects.filter(user=self.request.user).order_by("ocurred_at").filter(ocurred_at__range=(date_from, date_to))
-                thought = Thought.objects.filter(user=self.request.user).order_by("created_at").filter(created_at__range=(date_from, date_to))
+            journal = Journal.objects.filter(user=self.request.user).order_by("ocurred_at").filter(ocurred_at__range=(date_from, date_to))
+            thought = Thought.objects.filter(user=self.request.user).order_by("created_at").filter(created_at__range=(date_from, date_to))
+            context["actual_date"] = date_to
+            context["origin_date"] = date_from
         else:
             journal = Journal.objects.filter(user=self.request.user).order_by("ocurred_at")
             thought = Thought.objects.filter(user=self.request.user).order_by("created_at")
         
         if journal:
-            context["actual_date"] = date_to
-            context["origin_date"] = date_from
             context["journal"] = journal
 
             # Filling the missing days between entries
