@@ -42,15 +42,16 @@ if not ALLOWED_HOSTS:
     ALLOWED_CLIENT_HOSTS = _DEFAULT_CLIENT_HOSTS
 
 CSRF_TRUSTED_ORIGINS = []
-if len(PORT_HTTP) > 1:
-    CSRF_TRUSTED_ORIGINS.extend(f"http://{SERVER}:{port}" for port in PORT_HTTP)
-else:
-    CSRF_TRUSTED_ORIGINS.append(f"http://{SERVER}:{PORT_HTTP}")
+for ip in ALLOWED_HOSTS:
+    if isinstance(PORT_HTTP, list):
+        CSRF_TRUSTED_ORIGINS.extend(f"http://{ip}:{port}" for port in PORT_HTTP)
+    else:
+        CSRF_TRUSTED_ORIGINS.append(f"http://{ip}:{PORT_HTTP}")
 
-if len(PORT_HTTPS) > 1:
-    CSRF_TRUSTED_ORIGINS.extend(f"https://{SERVER}:{port}" for port in PORT_HTTPS)
-else:
-    CSRF_TRUSTED_ORIGINS.append(f"https://{SERVER}:{PORT_HTTPS}")
+    if isinstance(PORT_HTTPS, list):
+        CSRF_TRUSTED_ORIGINS.extend(f"https://{ip}:{port}" for port in PORT_HTTPS)
+    else:
+        CSRF_TRUSTED_ORIGINS.append(f"https://{ip}:{PORT_HTTPS}")
 
 # DISABLE MODULE LOGGERS
 modules_to_disable = [
